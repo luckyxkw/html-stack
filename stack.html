@@ -1,0 +1,87 @@
+<html>
+<head>
+	<style>
+		.flex-wrapper {
+			width: 100%;
+			display: flex;
+			justify-content: space-around;
+			margin: 4px;
+		}
+
+		.stack {
+			border-color: black;
+			border-style: solid;
+			border-width: 2px;
+			border-radius: 4px;
+			width: 100px;
+			min-height: 10px;
+			margin: 4px;
+		}
+
+		.stack-node {
+			border-color: black;
+			border-style: solid;
+			border-width: 2px;
+			border-radius: 4px;
+			height: 20px;
+			margin: 4px;
+		}
+	</style>
+</head>
+<body>
+	<div class="flex-wrapper">
+		<div id="stack" class="stack">
+		</div>
+	</div>
+	<div class="flex-wrapper">
+  	<div>Push stack <input type="number" id="input-push-stack"></div>
+  	<div><button id="btn-pop-stack">Pop stack</button></div>
+  	<div>Top <input type="number" id="input-top" readonly="true"></div>
+	</div>
+
+
+	<script>
+		function main() {
+			const stack = [];
+			document.getElementById("input-push-stack").addEventListener("keyup", function (e) {
+    		if (e.keyCode == 13) {
+    			e.preventDefault();
+      		stack.push(document.getElementById("input-push-stack").value);
+      		document.getElementById("input-push-stack").value = '';
+      		refresh();
+    		}
+			});
+
+			document.getElementById("btn-pop-stack").addEventListener("click", function (e) {
+    		stack.pop();
+    		refresh();
+			});
+
+
+			function refresh() {
+				console.log(stack);
+				const stackElement = document.getElementById("stack");
+				while (stackElement.firstChild) {
+    			stackElement.removeChild(stackElement.firstChild);
+				}
+				for (let i = stack.length - 1; i >= 0; --i) {
+					const num = stack[i];
+					const node = document.createElement("div");
+					node.className = "stack-node";
+					const newContent = document.createTextNode(num); 
+  				node.appendChild(newContent);
+
+					stackElement.appendChild(node);
+				}
+				if (stack.length >= 1) {
+					document.getElementById("input-top").value = stack[stack.length - 1];
+				} else {
+					document.getElementById("input-top").value = '';
+				}
+			}
+		}
+
+		main();
+	</script>
+</body>
+</html>
